@@ -1,16 +1,13 @@
 from tkinter import *
 from tkinter import  ttk
 
-
 def buttonClick():
     enteredText = entry.get()
     label.config(text=f"{enteredText}")
 
-
 def listboxSelect(event):
     selected_item = listbox.get(listbox.curselection())
     label.config(text=f"selected: {selected_item}")
-
 
 def dropdownSelect(option):
     label.config(text=f"Selected: {option}")
