@@ -11,7 +11,6 @@ window.geometry("300x300")
 
 counter = 0
 
-
 def count():
     global counter
     counter += 1
@@ -23,10 +22,6 @@ def reset():
     counter = 0
     counter_label = Label(window, text=f"count: {counter}", font=('Arial', 15), width=20)
     counter_label.place(x=65, y=0)
-
-
-
-
 
 countButton = Button(window, text="Count", font=("Arial", 10), width=20, command=count)
 countButton.place(x=65, y=60)
