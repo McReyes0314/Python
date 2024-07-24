@@ -1,31 +1,59 @@
-from tkinter import *
+import tkinter as tk
 
-window = Tk()
-window.geometry("250x300")
-label = Label(text=0, font=("Times New Roman", 20), pady=20)
-label.place(x=0, y=0)
+class Calculator:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Simple Calculator")
+        self.root.geometry("400x500")
 
-frame_button = Frame(window)
-frame_button.place(x=0, y=70)
+        self.expression = ""
 
-button7 = Button(frame_button, text=7, font=("Arial", 15), padx=18, pady=10).grid(row=0, column=0)
-button8 = Button(frame_button, text=8, font=("Arial", 15), padx=18, pady=10).grid(row=0, column=1)
-button9 = Button(frame_button, text=9, font=("Arial", 15), padx=18, pady=10).grid(row=0, column=2)
-buttonPlus = Button(frame_button, text="+", font=("Arial", 15), padx=18, pady=10).grid(row=0, column=3)
+        # Display for the calculator
+        self.display = tk.Entry(self.root, font=('Arial', 20), bd=10, insertwidth=2, width=14, borderwidth=4)
+        self.display.grid(row=0, column=0, columnspan=4)
 
-button4 = Button(frame_button, text=4, font=("Arial", 15), padx=18, pady=10).grid(row=1, column=0)
-button5 = Button(frame_button, text=5, font=("Arial", 15), padx=18, pady=10).grid(row=1, column=1)
-button6 = Button(frame_button, text=6, font=("Arial", 15), padx=18, pady=10).grid(row=1, column=2)
-buttonMinus = Button(frame_button, text="-", font=("Arial", 15), padx=21, pady=10).grid(row=1, column=3)
+        # Adding buttons
+        self.create_buttons()
 
-button1 = Button(frame_button, text=1, font=("Arial", 15), padx=18, pady=10).grid(row=2, column=0)
-button2 = Button(frame_button, text=2, font=("Arial", 15), padx=18, pady=10).grid(row=2, column=1)
-button3 = Button(frame_button, text=3, font=("Arial", 15), padx=18, pady=10).grid(row=2, column=2)
-buttonMulti = Button(frame_button, text="*", font=("Arial", 15), padx=20, pady=10).grid(row=2, column=3)
+    def create_buttons(self):
+        buttons = [
+            '7', '8', '9', '/',
+            '4', '5', '6', '*',
+            '1', '2', '3', '-',
+            '0', 'C', '=', '+'
+        ]
 
-buttonC = Button(frame_button, text="c", font=("Arial", 15), padx=18, pady=10, bg="Maroon", fg="White").grid(row=3, column=0)
-button0 = Button(frame_button, text=0, font=("Arial", 15), padx=18, pady=10).grid(row=3, column=1)
-buttonEqual = Button(frame_button, text="=", font=("Arial", 15), padx=18, pady=10).grid(row=3, column=2)
-buttonDiv = Button(frame_button, text="/", font=("Arial", 15), padx=20, pady=10).grid(row=3, column=3)
+        row = 1
+        col = 0
 
-window.mainloop()
+        for button in buttons:
+            self.create_button(button, row, col)
+            col += 1
+            if col > 3:
+                col = 0
+                row += 1
+
+    def create_button(self, value, row, col):
+        button = tk.Button(self.root, text=value, padx=20, pady=20, font=('Arial', 18), command=lambda: self.on_button_click(value))
+        button.grid(row=row, column=col)
+
+    def on_button_click(self, value):
+        if value == "C":
+            self.expression = ""
+        elif value == "=":
+            try:
+                self.expression = str(eval(self.expression))
+            except:
+                self.expression = "Error"
+        else:
+            self.expression += value
+        self.update_display()
+
+    def update_display(self):
+        self.display.delete(0, tk.END)
+        self.display.insert(0, self.expression)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    calculator = Calculator(root)
+    root.mainloop()
